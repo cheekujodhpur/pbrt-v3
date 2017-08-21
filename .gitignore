@@ -3,4 +3,5 @@ src/build
 src/bin
 src/objs
 build/
+scenes/
 .sconsign.dblite
