@@ -171,10 +171,17 @@ struct Options {
     std::string imageFile;
 };
 
+// state_vector
+typedef std::vector<double> state_type;
+
 extern Options PbrtOptions;
 class TextureParams;
 
 // Global Constants
+
+#define ITERATIONS 2000
+#define DT_INIT 1000.0/ITERATIONS
+
 #ifdef _MSC_VER
 #define MaxFloat std::numeric_limits<Float>::max()
 #define Infinity std::numeric_limits<Float>::infinity()
