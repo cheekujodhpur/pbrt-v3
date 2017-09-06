@@ -155,6 +155,10 @@ bool Sphere::Intersect(const Ray &r, Float *tHit, SurfaceInteraction *isect,
     return true;
 }
 
+bool Sphere::IntersectCu(const Point3f &vc1, const Point3f &vc2, SurfaceInteraction *isect) const {
+    return true;
+}
+
 bool Sphere::IntersectP(const Ray &r, bool testAlphaTexture) const {
     ProfilePhase p(Prof::ShapeIntersectP);
     Float phi;

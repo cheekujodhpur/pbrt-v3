@@ -60,7 +60,9 @@ class Sphere : public Shape {
     Bounds3f ObjectBound() const;
     bool Intersect(const Ray &ray, Float *tHit, SurfaceInteraction *isect,
                    bool testAlphaTexture) const;
-    bool IntersectP(const Ray &ray, bool testAlphaTexture) const;
+    bool IntersectCu(const Point3f &vc1, const Point3f &vc2,
+                           SurfaceInteraction *isect) const;
+    virtual bool IntersectP(const Ray &ray, bool testAlphaTexture) const;
     Float Area() const;
     Interaction Sample(const Point2f &u, Float *pdf) const;
     Interaction Sample(const Interaction &ref, const Point2f &u,
