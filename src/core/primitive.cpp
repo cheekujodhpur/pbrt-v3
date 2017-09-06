@@ -110,6 +110,14 @@ bool GeometricPrimitive::Intersect(const Ray &r,
     return true;
 }
 
+bool GeometricPrimitive::IntersectCu(const Point3f &vc1,
+                                   const Point3f &vc2,
+                                   SurfaceInteraction *isect) const {
+    if (!shape->IntersectCu(vc1, vc2, isect)) return false;
+    return true;
+}
+
+
 const AreaLight *GeometricPrimitive::GetAreaLight() const {
     return areaLight.get();
 }
