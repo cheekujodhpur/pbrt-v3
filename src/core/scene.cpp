@@ -49,9 +49,10 @@ STAT_COUNTER("Intersections/Shadow ray intersection tests", nShadowTests);
 
 // Scene Method Definitions
 bool Scene::Intersect(const Ray &ray, SurfaceInteraction *isect) const {
-    ++nIntersectionTests;
-    DCHECK_NE(ray.d, Vector3f(0,0,0));
-    return aggregate->Intersect(ray, isect);
+    //++nIntersectionTests;
+    //DCHECK_NE(ray.d, Vector3f(0,0,0));
+    //return aggregate->Intersect(ray, isect);
+    return IntersectCu(ray, isect);
 }
 
 bool Scene::IntersectP(const Ray &ray) const {
@@ -75,11 +76,11 @@ bool Scene::IntersectTr(Ray ray, Sampler &sampler, SurfaceInteraction *isect,
     }
 }
 
-int Scene::forward(state_type &prev, state_type &state, SurfaceInteraction *isect) const{
-   Point3f vc1 = Point3f(prev[0], prev[1], prev[2]);
-   Point3f vc2 = Point3f(state[0],state[1],state[2]);
+int Scene::forward(const Ray &ray, state_type &prev, state_type &state, SurfaceInteraction *isect) const{
+   Vector3f vc1 = Vector3f(prev[0], prev[1], prev[2]);
+   Vector3f vc2 = Vector3f(state[0],state[1],state[2]);
 
-   return aggregate->IntersectCu(vc1, vc2, isect);
+   return aggregate->IntersectCu(ray, vc1, vc2, isect);
    return -1;
 }
 
@@ -110,8 +111,8 @@ bool Scene::IntersectCu(const Ray &ray, SurfaceInteraction *isect) const {
         prev[4] = x[4];
         prev[5] = x[5];
         rk.do_step(ray, x, t, dt);
-        int stage = forward(prev, x, isect);
-        /*if(stage==1)break;
+        int stage = forward(ray, prev, x, isect);
+        if(stage==1)break;
         else if(stage == 0)
         {
             x[0] = prev[0];
@@ -124,9 +125,10 @@ bool Scene::IntersectCu(const Ray &ray, SurfaceInteraction *isect) const {
             t -= dt;
         }
     }
-    if(id==-1)
+    if(isect->primitive==nullptr)
       return false;
     else{
+      /*
       o.x = x[0];
       o.y = x[1];
       o.z = x[2];
@@ -135,11 +137,9 @@ bool Scene::IntersectCu(const Ray &ray, SurfaceInteraction *isect) const {
       d.y = x[4];
       d.z = x[5];
       d = d.norm();
+      */
       return true;
-    }*/
     }
-
-    return aggregate->Intersect(ray, isect);
 }
 
 }  // namespace pbrt

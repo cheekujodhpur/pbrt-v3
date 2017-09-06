@@ -155,8 +155,22 @@ bool Sphere::Intersect(const Ray &r, Float *tHit, SurfaceInteraction *isect,
     return true;
 }
 
-bool Sphere::IntersectCu(const Point3f &vc1, const Point3f &vc2, SurfaceInteraction *isect) const {
-    return true;
+bool Sphere::IntersectCu(const Ray &ray, const Vector3f &vc1, const Vector3f &vc2, SurfaceInteraction *isect) const {
+    Vector3f p1Err, p2Err;
+    Vector3f p1 = (*WorldToObject)(vc1, &p1Err);
+    Vector3f p2 = (*WorldToObject)(vc2, &p2Err);
+    bool f1 = ((Dot(p1,p1)-radius*radius) < 0);
+    bool f2 = ((Dot(p2,p2)-radius*radius) < 0);
+
+    float offset = std::abs(std::sqrt(Dot(p2,p2))-radius);
+    
+    if((f1 ^ f2))
+        return false;
+    else if(offset < 1e-10){
+        float tHit = 0;
+        bool testAlphaTexture = false;
+        return Intersect(ray, &tHit, isect, testAlphaTexture);
+    }
 }
 
 bool Sphere::IntersectP(const Ray &r, bool testAlphaTexture) const {

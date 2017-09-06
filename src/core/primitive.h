@@ -53,7 +53,7 @@ class Primitive {
     virtual ~Primitive();
     virtual Bounds3f WorldBound() const = 0;
     virtual bool Intersect(const Ray &r, SurfaceInteraction *) const = 0;
-    virtual bool IntersectCu(const Point3f &vc1, const Point3f &vc2, SurfaceInteraction *) const {};
+    virtual bool IntersectCu(const Ray &ray, const Vector3f &vc1, const Vector3f &vc2, SurfaceInteraction *) const {};
     virtual bool IntersectP(const Ray &r) const = 0;
     virtual const AreaLight *GetAreaLight() const = 0;
     virtual const Material *GetMaterial() const = 0;
@@ -69,7 +69,7 @@ class GeometricPrimitive : public Primitive {
     // GeometricPrimitive Public Methods
     virtual Bounds3f WorldBound() const;
     virtual bool Intersect(const Ray &r, SurfaceInteraction *isect) const;
-    virtual bool IntersectCu(const Point3f &vc1, const Point3f &vc2, SurfaceInteraction *) const;
+    virtual bool IntersectCu(const Ray &ray, const Vector3f &vc1, const Vector3f &vc2, SurfaceInteraction *) const;
     virtual bool IntersectP(const Ray &r) const;
     GeometricPrimitive(const std::shared_ptr<Shape> &shape,
                        const std::shared_ptr<Material> &material,

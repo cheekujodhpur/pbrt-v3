@@ -110,10 +110,11 @@ bool GeometricPrimitive::Intersect(const Ray &r,
     return true;
 }
 
-bool GeometricPrimitive::IntersectCu(const Point3f &vc1,
-                                   const Point3f &vc2,
+bool GeometricPrimitive::IntersectCu(const Ray &ray,
+                                   const Vector3f &vc1,
+                                   const Vector3f &vc2,
                                    SurfaceInteraction *isect) const {
-    if (!shape->IntersectCu(vc1, vc2, isect)) return false;
+    if (!shape->IntersectCu(ray, vc1, vc2, isect)) return false;
     return true;
 }
 

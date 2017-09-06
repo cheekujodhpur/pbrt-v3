@@ -68,7 +68,7 @@ class Scene {
     // curved spacetime intersection
     bool IntersectCu(const Ray &ray, SurfaceInteraction *isect) const;
 
-    int forward(state_type &prev, state_type &state, SurfaceInteraction *isect) const;
+    int forward(const Ray &ray, state_type &prev, state_type &state, SurfaceInteraction *isect) const;
 
     // Scene Public Data
     std::vector<std::shared_ptr<Light>> lights;
