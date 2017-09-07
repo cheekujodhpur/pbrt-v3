@@ -49,10 +49,10 @@ STAT_COUNTER("Intersections/Shadow ray intersection tests", nShadowTests);
 
 // Scene Method Definitions
 bool Scene::Intersect(const Ray &ray, SurfaceInteraction *isect) const {
-    //++nIntersectionTests;
-    //DCHECK_NE(ray.d, Vector3f(0,0,0));
-    //return aggregate->Intersect(ray, isect);
-    return IntersectCu(ray, isect);
+    ++nIntersectionTests;
+    DCHECK_NE(ray.d, Vector3f(0,0,0));
+    return aggregate->Intersect(ray, isect);
+    //return IntersectCu(ray, isect);
 }
 
 bool Scene::IntersectP(const Ray &ray) const {
@@ -81,7 +81,6 @@ int Scene::forward(const Ray &ray, state_type &prev, state_type &state, SurfaceI
    Vector3f vc2 = Vector3f(state[0],state[1],state[2]);
 
    return aggregate->IntersectCu(ray, vc1, vc2, isect);
-   return -1;
 }
 
 bool Scene::IntersectCu(const Ray &ray, SurfaceInteraction *isect) const {
@@ -99,7 +98,7 @@ bool Scene::IntersectCu(const Ray &ray, SurfaceInteraction *isect) const {
 
     boost::numeric::odeint::runge_kutta4< state_type > rk;
 
-    double dt = 0.5;
+    double dt = DT_INIT;
     double t = 0.0;
 
     state_type prev = x;
@@ -112,7 +111,8 @@ bool Scene::IntersectCu(const Ray &ray, SurfaceInteraction *isect) const {
         prev[5] = x[5];
         rk.do_step(ray, x, t, dt);
         int stage = forward(ray, prev, x, isect);
-        if(stage==1)break;
+        if(stage==1)
+            break;
         else if(stage == 0)
         {
             x[0] = prev[0];
@@ -125,7 +125,7 @@ bool Scene::IntersectCu(const Ray &ray, SurfaceInteraction *isect) const {
             t -= dt;
         }
     }
-    if(isect->primitive==nullptr)
+    if(isect->time==0)
       return false;
     else{
       /*

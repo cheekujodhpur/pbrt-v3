@@ -179,7 +179,7 @@ class TextureParams;
 
 // Global Constants
 
-#define ITERATIONS 2000
+#define ITERATIONS 100
 #define DT_INIT 1000.0/ITERATIONS
 
 #ifdef _MSC_VER

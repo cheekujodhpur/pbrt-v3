@@ -696,14 +696,14 @@ bool BVHAccel::Intersect(const Ray &ray, SurfaceInteraction *isect) const {
     return hit;
 }
 
-bool BVHAccel::IntersectCu(const Ray &ray,
+int BVHAccel::IntersectCu(const Ray &ray,
                                    const Vector3f &vc1,
                                    const Vector3f &vc2,
                                    SurfaceInteraction *isect) const {
 
     if (!nodes) return false;
     ProfilePhase p(Prof::AccelIntersect);
-    bool hit = false;
+    int hit = 0;
     Vector3f invDir(1 / ray.d.x, 1 / ray.d.y, 1 / ray.d.z);
     int dirIsNeg[3] = {invDir.x < 0, invDir.y < 0, invDir.z < 0};
     // Follow ray through BVH nodes to find primitive intersections
@@ -716,9 +716,8 @@ bool BVHAccel::IntersectCu(const Ray &ray,
             if (node->nPrimitives > 0) {
                 // Intersect ray with primitives in leaf BVH node
                 for (int i = 0; i < node->nPrimitives; ++i)
-                    if (primitives[node->primitivesOffset + i]->IntersectCu(
-                            ray, vc1, vc2, isect))
-                        hit = true;
+                    hit = primitives[node->primitivesOffset + i]->IntersectCu(
+                            ray, vc1, vc2, isect);
                 if (toVisitOffset == 0) break;
                 currentNodeIndex = nodesToVisit[--toVisitOffset];
             } else {
