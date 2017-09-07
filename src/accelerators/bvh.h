@@ -65,6 +65,7 @@ class BVHAccel : public Aggregate {
     ~BVHAccel();
     bool Intersect(const Ray &ray, SurfaceInteraction *isect) const;
     bool IntersectP(const Ray &ray) const;
+    bool IntersectCu(const Ray &ray, const Vector3f &vc1, const Vector3f &vc2, SurfaceInteraction *) const;
 
   private:
     // BVHAccel Private Methods
