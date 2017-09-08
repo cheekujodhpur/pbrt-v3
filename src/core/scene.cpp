@@ -125,7 +125,7 @@ bool Scene::IntersectCu(const Ray &ray, SurfaceInteraction *isect) const {
             t -= dt;
         }
     }
-    if(isect->time==0)
+    if(isect->primitive==nullptr)
       return false;
     else{
       /*

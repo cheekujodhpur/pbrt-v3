@@ -114,7 +114,20 @@ int GeometricPrimitive::IntersectCu(const Ray &ray,
                                    const Vector3f &vc1,
                                    const Vector3f &vc2,
                                    SurfaceInteraction *isect) const {
-    return shape->IntersectCu(ray, vc1, vc2, isect);
+    Float tHit;
+    int result = shape->IntersectCu(ray, vc1, vc2, isect);
+    if(result!=1) return result;
+
+    ray.tMax = tHit;
+    isect->primitive = this;
+    CHECK_GE(Dot(isect->n, isect->shading.n), 0.);
+    // Initialize _SurfaceInteraction::mediumInterface_ after _Shape_
+    // intersection
+    if (mediumInterface.IsMediumTransition())
+        isect->mediumInterface = mediumInterface;
+    else
+        isect->mediumInterface = MediumInterface(ray.medium);
+    return result;
 }
 
 
