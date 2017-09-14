@@ -159,8 +159,8 @@ int Sphere::IntersectCu(const Ray &ray, const Vector3f &vc1, const Vector3f &vc2
     Vector3f p1Err, p2Err;
     Vector3f p1 = (*WorldToObject)(vc1, &p1Err);
     Vector3f p2 = (*WorldToObject)(vc2, &p2Err);
-    bool f1 = ((Dot(p1,p1)-radius*radius) < 0);
-    bool f2 = ((Dot(p2,p2)-radius*radius) < 0);
+    bool f1 = (std::sqrt(Dot(p1,p1))-radius < 0);
+    bool f2 = (std::sqrt(Dot(p2,p2))-radius < 0);
 
     float offset = std::abs(std::sqrt(Dot(p2,p2))-radius);
     
